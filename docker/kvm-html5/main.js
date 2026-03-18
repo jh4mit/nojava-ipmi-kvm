@@ -11,9 +11,17 @@ const { execFileSync } = require('child_process');
 
 // Read options and password
 const fs = require('fs');
-const config = JSON.parse(fs.readFileSync(0, 'utf-8'));
 
-console.log("Config:", config);
+const config = {
+  kvm_host: process.env.KVM_HOST,
+  kvm_password: fs.readFileSync('/run/secrets/ipmi_password', 'utf-8').trim(),
+  rewrites: process.env.KVM_REWRITES ? JSON.parse(process.env.KVM_REWRITES) : [],
+};
+
+const logSafeConfig = {...config, kvm_password: '***'};
+console.log("Config:", logSafeConfig);
+
+//console.log("Config:", config);
 
 // Check config:
 if (!("kvm_password" in config && "kvm_host" in config)) {
