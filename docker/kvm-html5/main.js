@@ -200,6 +200,12 @@ proxy.on('error', function (e,req){
   }
 });
 
+// Strip headers that prevent iframe embedding
+proxy.on('proxyRes', function (proxyRes, req, res) {
+  delete proxyRes.headers['x-frame-options'];
+  delete proxyRes.headers['content-security-policy'];
+});
+
 proxyServer.listen(PROXY_PORT);
 
 console.log("Proxy is listening");
