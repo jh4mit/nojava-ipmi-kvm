@@ -1,6 +1,6 @@
 #!/bin/bash
 
-read -r -s PASSWD
+PASSWD=$(cat /run/secrets/ipmi_password)
 echo "${PASSWD}" | /usr/local/bin/get_java_viewer -o /tmp/launch.jnlp "$@"
 return_code="$?"
 if [[ "${return_code}" -ne 0 ]]; then
