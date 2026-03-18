@@ -6,38 +6,38 @@ default:
 
 build-openjdk:
 	for openjdk_version in 7 8; do \
-	    docker build -t "sciapp/nojava-ipmi-kvm:latest-openjdk-$${openjdk_version}" \
+	    docker build -t "jh4mit/nojava-ipmi-kvm:latest-openjdk-$${openjdk_version}" \
 	                 -f "Dockerfile_openjdk-$${openjdk_version}" .; \
 	done
 	for openjdk_version in 7 8; do \
-	    docker tag "sciapp/nojava-ipmi-kvm:latest-openjdk-$${openjdk_version}" \
-	               "sciapp/nojava-ipmi-kvm:v$(PACKAGE_VERSION)-openjdk-$${openjdk_version}"; \
+	    docker tag "jh4mit/nojava-ipmi-kvm:latest-openjdk-$${openjdk_version}" \
+	               "jh4mit/nojava-ipmi-kvm:v$(PACKAGE_VERSION)-openjdk-$${openjdk_version}"; \
 	done
 
 build-oracle:
 	@if [[ -f "jre-7u80-linux-x64.tar.gz" ]]; then \
-	    docker build -t "sciapp/nojava-ipmi-kvm:latest-oraclejre-7" -f "Dockerfile_oraclejre-7" .; \
+	    docker build -t "jh4mit/nojava-ipmi-kvm:latest-oraclejre-7" -f "Dockerfile_oraclejre-7" .; \
 	    if [[ "$$(git symbolic-ref -q HEAD)" == "refs/heads/master" ]]; then \
-	        docker tag "sciapp/nojava-ipmi-kvm:latest-oraclejre-7" \
-	                   "sciapp/nojava-ipmi-kvm:v$(PACKAGE_VERSION)-oraclejre-7"; \
+	        docker tag "jh4mit/nojava-ipmi-kvm:latest-oraclejre-7" \
+	                   "jh4mit/nojava-ipmi-kvm:v$(PACKAGE_VERSION)-oraclejre-7"; \
 	    fi; \
 	else \
 	    >&2 echo "Please download \"jre-7u80-linux-x64.tar.gz\" to build an Oracle Java 7 docker image."; \
 	fi; \
 	if [[ -f "jre-8u251-linux-x64.tar.gz" ]]; then \
-	    docker build -t "sciapp/nojava-ipmi-kvm:latest-oraclejre-8" -f "Dockerfile_oraclejre-8" .; \
+	    docker build -t "jh4mit/nojava-ipmi-kvm:latest-oraclejre-8" -f "Dockerfile_oraclejre-8" .; \
 	    if [[ "$$(git symbolic-ref -q HEAD)" == "refs/heads/master" ]]; then \
-	        docker tag "sciapp/nojava-ipmi-kvm:latest-oraclejre-8" \
-	                   "sciapp/nojava-ipmi-kvm:v$(PACKAGE_VERSION)-oraclejre-8"; \
+	        docker tag "jh4mit/nojava-ipmi-kvm:latest-oraclejre-8" \
+	                   "jh4mit/nojava-ipmi-kvm:v$(PACKAGE_VERSION)-oraclejre-8"; \
 	    fi; \
 	else \
 	    >&2 echo "Please download \"jre-8u251-linux-x64.tar.gz\" to build an Oracle Java 8 docker image."; \
 	fi
 
 build-html5:
-	docker build -t "sciapp/nojava-ipmi-kvm:latest-html5" \
+	docker build -t "jh4mit/nojava-ipmi-kvm:latest-html5" \
 	           -f "Dockerfile_html5" .; \
-	docker tag "sciapp/nojava-ipmi-kvm:latest-html5" \
-	           "sciapp/nojava-ipmi-kvm:v$(PACKAGE_VERSION)-html5"; \
+	docker tag "jh4mit/nojava-ipmi-kvm:latest-html5" \
+	           "jh4mit/nojava-ipmi-kvm:v$(PACKAGE_VERSION)-html5"; \
 
 .PHONY: build-openjdk build-oracle build-html5 default
