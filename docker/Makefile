@@ -3,7 +3,7 @@ TAG = v0.9.2
 
 .PHONY: build-java build-html5 build-all push-java push-html5 push-all
 
-build-all: build-java build-html5
+build-all: build-java build-html5 build-supermicro-x8
 
 build-java:
 	docker build -t $(REPO):$(TAG)-openjdk-7 -f Dockerfile_openjdk-7 .
@@ -13,7 +13,12 @@ build-html5:
 	docker build -t $(REPO):$(TAG)-html5 -f Dockerfile_html5 .
 	docker tag $(REPO):$(TAG)-html5 $(REPO):latest-html5
 
-push-all: push-java push-html5
+build-supermicro-x8:
+	docker build -t $(REPO):$(TAG)-supermicro-x8 -f Dockerfile_supermicro_x8 .
+	docker tag $(REPO):$(TAG)-supermicro-x8 $(REPO):latest-supermicro-x8
+
+
+push-all: push-java push-html5 push-supermicro-x8
 
 push-java: build-java
 	docker push $(REPO):$(TAG)-openjdk-7
@@ -22,3 +27,7 @@ push-java: build-java
 push-html5: build-html5
 	docker push $(REPO):$(TAG)-html5
 	docker push $(REPO):latest-html5
+
+push-html5: build-supermicro-x8
+	docker push $(REPO):$(TAG)-supermicro-x8
+	docker push $(REPO):latest-supermicro-x8

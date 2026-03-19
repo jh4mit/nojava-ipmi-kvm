@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PASSWD=$(cat /run/secrets/ipmi_password)
-echo "${PASSWD}" | /usr/local/bin/get_java_viewer -o /tmp/launch.jnlp "$@"
+echo "${PASSWD}" | /usr/local/bin/get_java_viewer -o /tmp/launch.jnlp "$@" "${KVM_HOSTNAME}"
 return_code="$?"
 if [[ "${return_code}" -ne 0 ]]; then
     exit "${return_code}"
