@@ -1,9 +1,13 @@
 REPO = jh4mit/nojava-ipmi-kvm
 TAG = v0.9.2
 
-.PHONY: build-java build-html5 build-all push-java push-html5 push-all
+BOARDS = supermicro-x8 supermicro-x10 supermicro-x12
 
-build-all: build-java build-html5 build-supermicro-x8
+.PHONY: build-java build-html5 build-all push-java push-html5 push-all \
+        $(addprefix build-,$(BOARDS)) $(addprefix push-,$(BOARDS))
+
+build-all: build-java build-html5 $(addprefix build-,$(BOARDS))
+push-all: push-java push-html5 $(addprefix push-,$(BOARDS))
 
 build-java:
 	docker build -t $(REPO):$(TAG)-openjdk-7 -f Dockerfile_openjdk-7 .
@@ -13,12 +17,9 @@ build-html5:
 	docker build -t $(REPO):$(TAG)-html5 -f Dockerfile_html5 .
 	docker tag $(REPO):$(TAG)-html5 $(REPO):latest-html5
 
-build-supermicro-x8:
-	docker build -t $(REPO):$(TAG)-supermicro-x8 -f Dockerfile_supermicro-x8 .
-	docker tag $(REPO):$(TAG)-supermicro-x8 $(REPO):latest-supermicro-x8
-
-
-push-all: push-java push-html5 push-supermicro-x8
+$(addprefix build-,$(BOARDS)): build-%:
+	docker build -t $(REPO):$(TAG)-$* -f Dockerfile_$* .
+	docker tag $(REPO):$(TAG)-$* $(REPO):latest-$*
 
 push-java: build-java
 	docker push $(REPO):$(TAG)-openjdk-7
@@ -28,6 +29,6 @@ push-html5: build-html5
 	docker push $(REPO):$(TAG)-html5
 	docker push $(REPO):latest-html5
 
-push-supermicro-x8: build-supermicro-x8
-	docker push $(REPO):$(TAG)-supermicro-x8
-	docker push $(REPO):latest-supermicro-x8
+$(addprefix push-,$(BOARDS)): push-%: build-%
+	docker push $(REPO):$(TAG)-$*
+	docker push $(REPO):latest-$*
