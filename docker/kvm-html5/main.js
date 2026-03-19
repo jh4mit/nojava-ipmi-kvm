@@ -13,7 +13,7 @@ const { execFileSync } = require('child_process');
 const fs = require('fs');
 
 const config = {
-  kvm_host: process.env.KVM_HOST,
+  kvm_host: 'https://' + process.env.KVM_HOSTNAME,
   kvm_password: fs.readFileSync('/run/secrets/ipmi_password', 'utf-8').trim(),
   rewrites: process.env.KVM_REWRITES ? JSON.parse(process.env.KVM_REWRITES) : [],
 };
@@ -32,7 +32,7 @@ if (!("kvm_password" in config && "kvm_host" in config)) {
 // Execute get_java_viewer to acquire logged-in session
 let get_java_viewer_args = process.argv.slice(2);
 // Derive BMC hostname from KVM_HOST env var (e.g. "https://10.90.11.10" -> "10.90.11.10")
-let kvm_hostname = config.kvm_host.replace(/^https?:\/\//, '');
+let kvm_hostname = process.env.KVM_HOSTNAME;
 get_java_viewer_args.unshift("/usr/local/bin/get_java_viewer");
 get_java_viewer_args.push('-S'); // force session_only call on get_java_viewer
 get_java_viewer_args.push(kvm_hostname);
