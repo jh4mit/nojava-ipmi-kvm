@@ -7,7 +7,7 @@ BOARDS = supermicro-x8 supermicro-x10 supermicro-x12
         $(addprefix build-,$(BOARDS)) $(addprefix push-,$(BOARDS))
 
 build-all: build-java build-html5 $(addprefix build-,$(BOARDS))
-push-all: push-java push-html5 $(addprefix push-,$(BOARDS))
+push-all: $(addprefix push-,$(BOARDS))
 
 build-java:
 	docker build -t $(REPO):$(TAG)-openjdk-7 -f Dockerfile_openjdk-7 .
