@@ -14,7 +14,7 @@ build-html5:
 	docker tag $(REPO):$(TAG)-html5 $(REPO):latest-html5
 
 build-supermicro-x8:
-	docker build -t $(REPO):$(TAG)-supermicro-x8 -f Dockerfile_supermicro_x8 .
+	docker build -t $(REPO):$(TAG)-supermicro-x8 -f Dockerfile_supermicro-x8 .
 	docker tag $(REPO):$(TAG)-supermicro-x8 $(REPO):latest-supermicro-x8
 
 
