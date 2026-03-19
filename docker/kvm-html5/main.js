@@ -31,8 +31,11 @@ if (!("kvm_password" in config && "kvm_host" in config)) {
 
 // Execute get_java_viewer to acquire logged-in session
 let get_java_viewer_args = process.argv.slice(2);
+// Derive BMC hostname from KVM_HOST env var (e.g. "https://10.90.11.10" -> "10.90.11.10")
+let kvm_hostname = config.kvm_host.replace(/^https?:\/\//, '');
 get_java_viewer_args.unshift("/usr/local/bin/get_java_viewer");
 get_java_viewer_args.push('-S'); // force session_only call on get_java_viewer
+get_java_viewer_args.push(kvm_hostname);
 
 let session_data = execFileSync("/usr/bin/python2", get_java_viewer_args, {
   input: config.kvm_password,
