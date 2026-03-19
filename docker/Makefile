@@ -28,6 +28,6 @@ push-html5: build-html5
 	docker push $(REPO):$(TAG)-html5
 	docker push $(REPO):latest-html5
 
-push-html5: build-supermicro-x8
+push-supermicro-x8: build-supermicro-x8
 	docker push $(REPO):$(TAG)-supermicro-x8
 	docker push $(REPO):latest-supermicro-x8
